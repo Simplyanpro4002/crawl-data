@@ -7,25 +7,19 @@ import json
 
 def plot_stock_distribution(returns, var_results, stock_code, output_dir):
     """
-    Create a plot showing the distribution of monthly returns and VaR levels
+    Create a plot showing the distribution of monthly returns and 95% Historical VaR level
     """
     plt.figure(figsize=(12, 6))
     
     # Plot the distribution of returns
     sns.histplot(data=returns, x='log_return', bins=30, kde=True)
     
-    # Add vertical lines for VaR levels
-    plt.axvline(x=-var_results['parametric_var_95'], color='red', linestyle='--', 
-                label='95% Parametric VaR')
-    plt.axvline(x=-var_results['historical_var_95'], color='green', linestyle='--', 
+    # Add vertical line for 95% Historical VaR
+    plt.axvline(x=-var_results['historical_var_95'], color='red', linestyle='--', 
                 label='95% Historical VaR')
-    plt.axvline(x=-var_results['parametric_var_99'], color='orange', linestyle='--', 
-                label='99% Parametric VaR')
-    plt.axvline(x=-var_results['historical_var_99'], color='purple', linestyle='--', 
-                label='99% Historical VaR')
     
     # Add labels and title
-    plt.title(f'Distribution of Monthly Returns and VaR for {stock_code}')
+    plt.title(f'Distribution of Monthly Returns and 95% Historical VaR for {stock_code}')
     plt.xlabel('Monthly Log Return')
     plt.ylabel('Frequency')
     plt.legend()
