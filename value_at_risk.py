@@ -6,27 +6,23 @@ import os
 
 import matplotlib.pyplot as plt
 
-def calculate_log_returns_and_avg_price(stock_data):
+def calculate_log_returns(stock_data):
     """
-    Calculate daily log returns and average price from adjusted close prices
+    Calculate daily log returns from adjusted close prices
     
     Parameters:
     stock_data (DataFrame): DataFrame containing 'ClosePriceAdjusted' column
     
     Returns:
-    tuple: (log_returns array, average_price float)
+    array: log_returns array
     """
     # Remove entries where ClosePriceAdjusted is 0
     stock_data = stock_data[stock_data['ClosePriceAdjusted'] != 0].copy()
 
-
     # Calculate log returns
     log_returns = np.log(stock_data['ClosePriceAdjusted'] / stock_data['ClosePriceAdjusted'].shift(1)).dropna()
     
-    # Calculate average price
-    average_price = stock_data['ClosePriceAdjusted'].mean()
-    
-    return log_returns, average_price
+    return log_returns
 
 
 def calculate_var(returns, confidence_level=0.95, initial_investment=1000000):
@@ -140,13 +136,15 @@ if __name__ == "__main__":
         # Sort by date
         stock_price_df = stock_price_df.sort_values('TradingDate')
 
-        # Calculate log returns and average price
-        log_returns, avg_price = calculate_log_returns_and_avg_price(stock_price_df)
-        
+        # Calculate log returns
+        log_returns = calculate_log_returns(stock_price_df)
+
         # Calculate monthly VaR
         monthly_var = calculate_monthly_var(log_returns, confidence_level=0.95, initial_investment=1000000)
         print(f"{stock_code} Monthly Value at Risk: ${monthly_var:,.2f}")
-        
+
         # Plot and save the VaR distribution
         plot_var_distribution(log_returns, confidence_level=0.95, initial_investment=1000000, 
                             filename=f'{stock_code.lower()}_var_distribution.png')
+        
+   
