@@ -1,0 +1,22 @@
+{
+    "data": [
+        {
+            "IndexCode": "HNX30",
+            "IndexName": "HNX30",
+            "Exchange": "HNX"
+        },
+        {
+            "IndexCode": "HNXIndex",
+            "IndexName": "HNXINDEX",
+            "Exchange": "HNX"
+        },
+        {
+            "IndexCode": "HNXUpcomIndex",
+            "IndexName": "HNXUPCOMINDEX",
+            "Exchange": "HNX"
+        }
+    ],
+    "message": "Success",
+    "status": "Success",
+    "totalRecord": 3
+}
