@@ -5,12 +5,12 @@ import seaborn as sns
 from pathlib import Path
 
 def plot_var_distribution():
-    # Read the historical VaR results
-    var_df = pd.read_csv('historical_var_95_results.csv')
+    # Create output directory
+    output_dir = Path('var_analysis')
+    output_dir.mkdir(exist_ok=True)
     
-    # Calculate statistics
-    mean_var = var_df['historical_var_95'].mean()
-    std_var = var_df['historical_var_95'].std()
+    # Read the VaR data
+    var_df = pd.read_csv('historical_var_95_results.csv')
     
     # Create the plot
     plt.figure(figsize=(12, 6))
@@ -18,18 +18,19 @@ def plot_var_distribution():
     # Plot histogram with KDE
     sns.histplot(data=var_df, x='historical_var_95', bins=30, kde=True)
     
-    # Add vertical line for mean
+    # Add vertical lines for mean and standard deviation
+    mean_var = var_df['historical_var_95'].mean()
+    std_var = var_df['historical_var_95'].std()
+    
     plt.axvline(x=mean_var, color='red', linestyle='--', 
                 label=f'Mean VaR: {mean_var:.4f}')
-    
-    # Add vertical line for mean ± std
     plt.axvline(x=mean_var + std_var, color='green', linestyle='--', 
-                label=f'Mean + Std: {mean_var + std_var:.4f}')
+                label=f'+1 Std Dev: {mean_var + std_var:.4f}')
     plt.axvline(x=mean_var - std_var, color='green', linestyle='--', 
-                label=f'Mean - Std: {mean_var - std_var:.4f}')
+                label=f'-1 Std Dev: {mean_var - std_var:.4f}')
     
     # Add labels and title
-    plt.title('Distribution of 95% Historical VaR Values Across All Stocks')
+    plt.title('Distribution of 95% Historical VaR Values\n(Standard Deviation: {:.4f})'.format(std_var))
     plt.xlabel('95% Historical VaR')
     plt.ylabel('Frequency')
     plt.legend()
@@ -43,10 +44,11 @@ def plot_var_distribution():
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # Save the plot
-    output_dir = Path('plot')
-    output_dir.mkdir(exist_ok=True)
-    plt.savefig(output_dir / 'var_distribution.png', dpi=300, bbox_inches='tight')
+    output_file = output_dir / 'var_distribution.png'
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
     plt.close()
+    
+    print(f"Plot saved to {output_file}")
 
 if __name__ == "__main__":
     plot_var_distribution() 
