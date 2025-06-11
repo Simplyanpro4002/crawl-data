@@ -1,0 +1,5 @@
+- The json files in folder "result" show the daily stock price information of 112 stocks from 7/6/2022 to 7/6/2025 (3 years). We focus on the "ClosePriceAdjusted"
+- 25 more stocks are filtered out because the number of the line "TotalMatchVol": "0" in those 25 stock json files are higher than 100. This means these stocks have more than 100 days with no trading activities. The remaining number of stocks is 87.
+- We calculated the monthly VAR (95% historical) of 87 stocks in the file "filtered_historical_var_95_results.csv"
+- We then calculated the standard deviation, the draw the monthly VAR distribution in the file "var_analysis\var_distribution.png"
+- We listed out the ranges, frequencies and  detail in the file "var_bin_summary.json"
